@@ -1,3 +1,4 @@
+import 'package:a/search.dart';
 import 'package:flutter/material.dart';
 
 class chat extends StatelessWidget {
@@ -5,8 +6,7 @@ class chat extends StatelessWidget {
 
 
 
-  var namelist = ['test1', 'test2', 'test3'];
-  var sublist = ['a', 'b', 'c'];
+  var namelist = <String>[];
 
   chat({Key? key}) : super(key: key);
 
@@ -19,13 +19,19 @@ class chat extends StatelessWidget {
       appBar: AppBar(
         elevation: 8,
         title: const Text(
-          'Meessages',
+          'Messages',
         ),
         actions: [
           IconButton(
               icon: const Icon(Icons.search),
               color: Colors.black87,
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchPage(),
+                  fullscreenDialog: true,
+                ),
+              );
             }
           ),
         ],
@@ -44,7 +50,6 @@ class chat extends StatelessWidget {
             leading: const CircleAvatar(),
               trailing: const Text(""),
               title: Text(namelist[i]),
-              subtitle: Text(sublist[i]),
             ),
           ]
         ),
