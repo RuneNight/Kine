@@ -1,12 +1,13 @@
 import 'package:a/home.dart';
+import 'package:a/builds/padding.dart';
+import 'package:a/builds/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 
 class LoginPage extends StatelessWidget {
 
-  String login_email = "";
-  String login_password = "";
+  String login_email = '';
+  String login_password = '';
 
   LoginPage({Key? key}) : super(key: key);
 
@@ -23,31 +24,10 @@ class LoginPage extends StatelessWidget {
         width: double.infinity,
         child: Column(
           children: [
-            TextFormField(
-              decoration: const InputDecoration(labelText: "MailAddress"),
-              onChanged: (text) {
-                if (text.isNotEmpty){
-                  login_email = text;
-                }
-              },
-            ),
-            const Padding(
-              padding: EdgeInsets.all(10),
-            ),
-            TextFormField(
-              obscureText: true,
-                maxLengthEnforcement: MaxLengthEnforcement.none,
-                maxLength: 20,
-              decoration: const InputDecoration(labelText: "Password"),
-                onChanged: (text){
-                  if (text.isNotEmpty){
-                    login_password = text;
-                  }
-                }
-            ),
-            const Padding(
-              padding: EdgeInsets.all(10),
-            ),
+            buildTextFormField('EmailAddress',login_email),
+            buildPadding(),
+            buildTextFormFieldPassword('Password',login_password),
+            buildPadding(),
             SizedBox(
               width:  200,
               height: 50,
@@ -57,20 +37,18 @@ class LoginPage extends StatelessWidget {
                     primary: Colors.green,
                 ),
                   onPressed: () {
-                    //null check
                     FirebaseAuth.instance.signInWithEmailAndPassword(
                         email: login_email, password: login_password);
-
                     if (FirebaseAuth.instance.currentUser != null) {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const HomePage(),
-                            fullscreenDialog: true,
-                  ),
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomePage(),
+                          fullscreenDialog: true,
+                        ),
                       );
                     }
-                  }
-              ),
+                  }),
             ),
           ],
         ),

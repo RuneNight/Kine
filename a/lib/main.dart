@@ -1,4 +1,5 @@
 import 'package:a/login.dart';
+import 'package:a/builds/padding.dart';
 import 'package:a/registration.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -51,14 +52,12 @@ class Registration extends StatelessWidget {
                 );
               }),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(30),
-                ),
+                buildPadding(),
           SizedBox(
             width:  1000,
             height: 200,
-          child:  ElevatedButton(child: Text('Login',
-              style: GoogleFonts.sawarabiMincho(
+              child:  ElevatedButton(child: Text('Login',
+                style: GoogleFonts.sawarabiMincho(
                 textStyle: Theme.of(context).textTheme.headline4,
                 color: Colors.redAccent,
                 fontSize: 60.0,

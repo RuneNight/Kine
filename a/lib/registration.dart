@@ -1,15 +1,15 @@
+import 'package:a/builds/padding.dart';
+import 'package:a/builds/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:a/login.dart';
 
 class RegistrationPage extends StatelessWidget {
-  String email = "";
-  // 入力されたパスワード
-  String password = "";
 
-  RegistrationPage({Key? key}) : super(key: key);
+  String email ='';
+  String password ='';
+
 
 
   @override
@@ -22,30 +22,9 @@ class RegistrationPage extends StatelessWidget {
         width: double.infinity,
         child: Column(
           children: [
-            TextFormField(
-              decoration: const InputDecoration(labelText: "MailAddress"),
-                onChanged: (text){
-                  if (text.isNotEmpty){
-                    email = text;
-                  }
-                }
-            ),
-            const Padding(
-              padding: EdgeInsets.all(10),
-            ),
-            TextFormField(
-              maxLengthEnforcement: MaxLengthEnforcement.none, obscureText: true,
-                maxLength: 20,
-                decoration: const InputDecoration(labelText: "Password"),
-              onChanged: (text){
-                if (text.isNotEmpty){
-                  password = text;
-                }
-              }
-            ),
-            const Padding(
-              padding: EdgeInsets.all(10),
-            ),
+            buildTextFormField('EmailAddress',email),
+            buildPadding(),
+            buildTextFormFieldPassword('Password',password),
             SizedBox(
               width:  200,
               height: 50,
@@ -57,26 +36,24 @@ class RegistrationPage extends StatelessWidget {
                     final user = userCredential.user;
                     if (user != null) {
                       final uid = user.uid;
-
-                      final doc = FirebaseFirestore.instance.collection('users').doc(uid);
+                      final doc = FirebaseFirestore.instance.collection(
+                          'users').doc(uid);
                       await doc.set({
                         'uid': uid,
                         'email': email,
-                  });
+                      });
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginPage(),
-                            fullscreenDialog: true,
-                          ),
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage(),
+                          fullscreenDialog: true,
+                        ),
                       );
                     }
-                  }
-              ),
+                  }),
             ),
               ]
         ),
       ),
     );
   }
-
 }

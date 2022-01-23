@@ -1,7 +1,8 @@
+import 'package:a/builds/padding.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'home.dart';
 
 class RoomAdd extends StatelessWidget {
@@ -19,10 +20,8 @@ class RoomAdd extends StatelessWidget {
 
 class RoomScrren extends StatelessWidget{
 
-
-
-
   String roomname = "";
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   RoomScrren({Key? key}) : super(key: key);
 
@@ -41,16 +40,16 @@ class RoomScrren extends StatelessWidget{
                 .doc(roomname)
                 .set({
               'name': roomname,
+              'adminuid': uid,
               'createdAt': date,
             });
-
-
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const HomePage(),
                   fullscreenDialog: true,
                 ),
               );
+
             },
             child: Text('Create',
             style: TextStyle(
@@ -69,37 +68,29 @@ class RoomScrren extends StatelessWidget{
       body: Center(
         child: Column(
           children: [
-            const Padding(padding: EdgeInsets.all(10),),
+            buildPadding(),
             InkWell( onTap: (){
 
             },
              child: Container(
-              width: 150,
-              height: 150,
+              width: 100,
+              height: 100,
               decoration: const BoxDecoration(
                 color: Colors.blue,
                 shape: BoxShape.circle,
               ),
              ),
             ),
-              IconButton(
-                icon: const Icon(Icons.camera_alt),
-                onPressed: () {
-
-                },
-              ),
-          SingleChildScrollView(
-            child: TextFormField(
-                maxLengthEnforcement: MaxLengthEnforcement.none,
-                maxLength: 20,
-                decoration: const InputDecoration(labelText: "RoomName"),
-                onChanged: (text){
-                  if (text.isNotEmpty){
-                    roomname = text;
-                  }
-                }
-            ),
-      ),
+        TextFormField(
+            maxLengthEnforcement: MaxLengthEnforcement.none,
+            maxLength: 20,
+            decoration: const InputDecoration(labelText: 'RoomName'),
+            onChanged: (text){
+              if (text.isNotEmpty){
+                roomname = text;
+              }
+            }
+        )
           ],
       ),
     ),

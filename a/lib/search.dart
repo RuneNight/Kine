@@ -1,4 +1,5 @@
 
+import 'package:a/builds/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -21,14 +22,7 @@ class SearchPage extends StatelessWidget {
           width: double.infinity,
           child: Column(
               children: [
-          TextFormField(
-          decoration: const InputDecoration(labelText: "RoomName"),
-          onChanged: (text){
-            if (text.isNotEmpty){
-              room = text;
-            }
-          }
-      ),
+              buildTextFormField('RoomName',room),
                 TextButton(onPressed: () async {
                   final _store = FirebaseFirestore.instance;
                   _store.collection('chat_room').where('name', isEqualTo: room).get();
@@ -38,10 +32,10 @@ class SearchPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                     color: Theme.of(context).primaryColor,
-                  ),),
-
+                  ),
+                  ),
                 )
-        ],
+             ],
           ),
       ),
     );

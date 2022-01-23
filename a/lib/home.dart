@@ -6,6 +6,7 @@ import 'package:a/chat.dart';
 
 
 class HomePage extends StatelessWidget {
+
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -13,6 +14,7 @@ class HomePage extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
+
     );
   }
 }
@@ -40,6 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,10 +60,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: _pages[_selectIndex],
     bottomNavigationBar: BottomNavigationBar(
-    items: const <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'Home',
+      items: const <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
+        icon: Icon(Icons.home),
+        label: 'Home',
     ),
       BottomNavigationBarItem(
         icon: Icon(Icons.settings),

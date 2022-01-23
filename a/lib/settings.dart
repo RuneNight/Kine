@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:a/builds/padding.dart';
+import 'package:a/builds/textfield.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
-
-
-  static String get email => FirebaseAuth.instance.currentUser?.email as String;
 
   const SettingsPage({Key? key}) : super(key: key);
 
@@ -13,9 +13,10 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String nickname = '';
+  String nickname ='';
+  String birthday='';
 
-  String password = '';
+  String get uid => FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -26,65 +27,37 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(10),
-              ),
+              buildPadding(),
               const Text(
                 'Profile',
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(5),
-              ),
-      TextFormField(
-        decoration: const InputDecoration(labelText: "NickName"),
-        onChanged: (text) {
-          if (text.isNotEmpty){
-            final nickname = text;
-          }
-        },
-      ),
-              const Padding(
-                padding: EdgeInsets.all(5),
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: "BirthDay"),
-                onChanged: (text) {
-                  if (text.isNotEmpty){
-                    final birthday = text;
-                  }
-                },
-              ),
-              const Padding(
-                padding: EdgeInsets.all(5),
-              ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: "Password"),
-          onChanged: (text) {
-            if (text.isNotEmpty){
-              final String? password = text;
-            }
-          },
-        ),
-              const Padding(
-                padding: EdgeInsets.all(15),
-              ),
+              buildPadding(),
+              buildTextFormField('NickName',nickname),
+              buildPadding(),
+              buildTextFormField('Birthday',birthday),
+              buildPadding(),
         SizedBox(
-      width:  200,
-      height: 80,
-      child:  ElevatedButton(
-      child: const Text('Save'),
-      style: ElevatedButton.styleFrom(
-      primary: Colors.blueGrey,
-      ),
-      onPressed: () async {
-          }
-          )
-    )
+          width:  200,
+          height: 80,
+           child:  ElevatedButton(
+               child: const Text('Save'),
+                   style: ElevatedButton.styleFrom(
+                      primary: Colors.blueGrey,
+           ),
+        onPressed: () async {
+          final doc = FirebaseFirestore.instance.collection('users').doc(uid);
+          doc.update({
+            'nickname': nickname,
+            'birthday': birthday,
+          });
+               }
+        )
+           )
         ]
         ),
   );
   }
-}
+  }
