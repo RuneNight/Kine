@@ -26,10 +26,12 @@ class SearchPage extends StatelessWidget {
                 TextButton(onPressed: () async {
                   FirebaseFirestore.instance
                       .collection('chat_room')
+                      .where('name',isEqualTo: roomNameController.text)
                       .get()
                       .then((QuerySnapshot querySnapshot) {
                     querySnapshot.docs.forEach((doc) {
                       final name = doc["name"];
+                      print(name);
                     });
                   });
                 },
