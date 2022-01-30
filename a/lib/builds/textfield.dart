@@ -1,26 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-TextFormField buildTextFormField(labeltext,profile) {
+TextFormField buildTextFormField(labeltext,controller) {
   return TextFormField(
     decoration: InputDecoration(labelText: labeltext),
-    onChanged: (text) {
-      if (text.isNotEmpty){
-        String profile = text;
-      }
-    },
+    controller: controller,
   );
 }
 
-TextFormField buildTextFormFieldPassword(label,pass) {
+TextFormField buildTextFormFieldPassword(label,controller) {
   return TextFormField(
     decoration: InputDecoration(labelText: label),obscureText: true,
     maxLengthEnforcement: MaxLengthEnforcement.none,
     maxLength: 20,
-    onChanged: (texts) {
-      if (texts.isNotEmpty){
-        String pass = texts;
-      }
-    },
+    controller: controller,
   );
 }

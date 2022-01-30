@@ -17,8 +17,7 @@ class RoomAdd extends StatelessWidget {
     );
   }
 }
-
-class RoomScrren extends StatelessWidget{
+class RoomScrren extends StatelessWidget {
 
   String roomname = "";
   String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -34,66 +33,67 @@ class RoomScrren extends StatelessWidget{
         actions: [
           TextButton(
             onPressed: () async {
-            final date = DateTime.now().toLocal().toIso8601String();
-            await FirebaseFirestore.instance
-                .collection('chat_room')
-                .doc(roomname)
-                .set({
-              'name': roomname,
-              'adminuid': uid,
-              'createdAt': date,
-            });
+              final date = DateTime.now().toLocal().toIso8601String();
+              await FirebaseFirestore.instance
+                  .collection('chat_room')
+                  .doc(roomname)
+                  .set({
+                'name': roomname,
+                'adminuid': uid,
+                'createdAt': date,
+              });
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const HomePage(),
                   fullscreenDialog: true,
                 ),
               );
-
             },
             child: Text('Create',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              color: Theme.of(context).primaryColor,
-            ),),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Theme
+                    .of(context)
+                    .primaryColor,
+              ),),
           ),
         ],
         title: const Text("Room Create",
           style: TextStyle(
             color: Colors.black87,
-        ),
+          ),
         ),
       ),
       body: Center(
         child: Column(
           children: [
-            buildPadding(),
-            InkWell( onTap: (){
+            buildPadding(5),
+            InkWell(onTap: () {
 
             },
-             child: Container(
-              width: 100,
-              height: 100,
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-                shape: BoxShape.circle,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.circle,
+                ),
               ),
-             ),
             ),
-        TextFormField(
-            maxLengthEnforcement: MaxLengthEnforcement.none,
-            maxLength: 20,
-            decoration: const InputDecoration(labelText: 'RoomName'),
-            onChanged: (text){
-              if (text.isNotEmpty){
-                roomname = text;
-              }
-            }
-        )
+            TextFormField(
+                maxLengthEnforcement: MaxLengthEnforcement.none,
+                maxLength: 20,
+                decoration: const InputDecoration(labelText: 'RoomName'),
+                onChanged: (text) {
+                  if (text.isNotEmpty) {
+                    roomname = text;
+                  }
+                }
+            )
           ],
+        ),
       ),
-    ),
     );
   }
 }

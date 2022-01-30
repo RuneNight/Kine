@@ -1,4 +1,3 @@
-
 import 'package:a/builds/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +7,7 @@ class SearchPage extends StatelessWidget {
 
   String room = '';
   List<DocumentSnapshot> documentList = [];
+  TextEditingController roomNameController = TextEditingController();
 
   SearchPage({Key? key}) : super(key: key);
 
@@ -22,22 +22,28 @@ class SearchPage extends StatelessWidget {
           width: double.infinity,
           child: Column(
               children: [
-              buildTextFormField('RoomName',room),
+                buildTextFormField('RoomName', roomNameController),
                 TextButton(onPressed: () async {
-                  final _store = FirebaseFirestore.instance;
-                  _store.collection('chat_room').where('name', isEqualTo: room).get();
+                  FirebaseFirestore.instance
+                      .collection('chat_room')
+                      .get()
+                      .then((QuerySnapshot querySnapshot) {
+                    querySnapshot.docs.forEach((doc) {
+                      final name = doc["name"];
+                    });
+                  });
                 },
                   child: Text('Search',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Theme.of(context).primaryColor,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Theme
+                          .of(context)
+                          .primaryColor,
+                    ),
                   ),
-                  ),
-                )
-             ],
-          ),
-      ),
+                ),
+              ])),
     );
   }
 }

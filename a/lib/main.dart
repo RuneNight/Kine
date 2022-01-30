@@ -32,53 +32,61 @@ class Registration extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width:  1000,
-                  height: 200,
-          child: ElevatedButton(child: Text('Registration',
-              style: GoogleFonts.sawarabiMincho(
-                  textStyle: Theme.of(context).textTheme.headline4,
-                  color: Colors.redAccent,
-                  fontSize: 60.0,
-          )),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RegistrationPage(),
-                    )
-                );
-              }),
-                ),
-                buildPadding(),
-          SizedBox(
-            width:  1000,
-            height: 200,
-              child:  ElevatedButton(child: Text('Login',
-                style: GoogleFonts.sawarabiMincho(
-                textStyle: Theme.of(context).textTheme.headline4,
-                color: Colors.redAccent,
-                fontSize: 60.0,
-              )),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage(),
-                    )
-                );
-                    if (FirebaseAuth.instance.currentUser != null) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage(),
-                        fullscreenDialog: true,
-                      )
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 1000,
+              height: 200,
+              child: ElevatedButton(child: Text('Registration',
+                  style: GoogleFonts.sawarabiMincho(
+                    textStyle: Theme
+                        .of(context)
+                        .textTheme
+                        .headline4,
+                    color: Colors.redAccent,
+                    fontSize: 60.0,
+                  )),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RegistrationPage(),
+                        )
                     );
-                   }
-                })
-               ),
-            ],
+                  }),
+            ),
+            buildPadding(10),
+            SizedBox(
+                width: 1000,
+                height: 200,
+                child: ElevatedButton(child: Text('Login',
+                    style: GoogleFonts.sawarabiMincho(
+                      textStyle: Theme
+                          .of(context)
+                          .textTheme
+                          .headline4,
+                      color: Colors.redAccent,
+                      fontSize: 60.0,
+                    )),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage(),
+                          )
+                      );
+                      if (FirebaseAuth.instance.currentUser != null) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                              fullscreenDialog: true,
+                            )
+                        );
+                      }
+                    })
+            ),
+          ],
         ),
       ),
     );

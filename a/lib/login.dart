@@ -6,12 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatelessWidget {
 
-  String login_email = '';
-  String login_password = '';
+  TextEditingController loginEmailController = TextEditingController();
+  TextEditingController loginPasswordController = TextEditingController();
 
   LoginPage({Key? key}) : super(key: key);
-
-
 
 
   @override
@@ -24,21 +22,23 @@ class LoginPage extends StatelessWidget {
         width: double.infinity,
         child: Column(
           children: [
-            buildTextFormField('EmailAddress',login_email),
-            buildPadding(),
-            buildTextFormFieldPassword('Password',login_password),
-            buildPadding(),
+            buildTextFormField('EmailAddress', loginEmailController),
+            buildPadding(5),
+            buildTextFormFieldPassword('Password', loginPasswordController),
+            buildPadding(5),
             SizedBox(
-              width:  200,
+              width: 200,
               height: 50,
-              child:  ElevatedButton(
+              child: ElevatedButton(
                   child: const Text('Login'),
-                style: ElevatedButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                     primary: Colors.green,
-                ),
+                  ),
                   onPressed: () {
+                    //firebaselogin
                     FirebaseAuth.instance.signInWithEmailAndPassword(
-                        email: login_email, password: login_password);
+                        email: loginEmailController.text,
+                        password: loginPasswordController.text);
                     if (FirebaseAuth.instance.currentUser != null) {
                       Navigator.push(
                         context,

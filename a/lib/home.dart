@@ -30,10 +30,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var _selectIndex = 0;
   final _pages = [
-     chat(),
-     const SettingsPage(),
+    Chat(),
+    const SettingsPage(),
   ];
-
 
 
   void _onTapItem(int index) {
@@ -41,8 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _selectIndex = index;
     });
   }
-
-
 
 
   @override
@@ -53,26 +50,26 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>  const RoomAdd())
+                MaterialPageRoute(builder: (context) => const RoomAdd())
             );
           },
           child: const Icon(Icons.person),
         ),
         body: _pages[_selectIndex],
-    bottomNavigationBar: BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-      BottomNavigationBarItem(
-        icon: Icon(Icons.home),
-        label: 'Home',
-    ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.settings),
-        label: 'Settings',
-    ),
-    ],
-      currentIndex: _selectIndex,
-      onTap: _onTapItem,
-              )
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
+          currentIndex: _selectIndex,
+          onTap: _onTapItem,
+        )
     );
   }
 }

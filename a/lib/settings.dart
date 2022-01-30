@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
-
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
@@ -13,8 +12,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String nickname ='';
-  String birthday='';
+  TextEditingController nicknameController = TextEditingController();
+  TextEditingController birthdayController = TextEditingController();
 
   String get uid => FirebaseAuth.instance.currentUser!.uid;
 
@@ -26,38 +25,41 @@ class _SettingsPageState extends State<SettingsPage> {
     return SingleChildScrollView(
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              buildPadding(),
-              const Text(
-                'Profile',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
+          children: [
+            buildPadding(5),
+            const Text(
+              'Profile',
+              style: TextStyle(
+                fontSize: 20,
               ),
-              buildPadding(),
-              buildTextFormField('NickName',nickname),
-              buildPadding(),
-              buildTextFormField('Birthday',birthday),
-              buildPadding(),
-        SizedBox(
-          width:  200,
-          height: 80,
-           child:  ElevatedButton(
-               child: const Text('Save'),
-                   style: ElevatedButton.styleFrom(
+            ),
+            buildPadding(5),
+            buildTextFormField('NickName', nicknameController),
+            buildPadding(10),
+            buildTextFormField('Birthday', birthdayController),
+            buildPadding(5),
+            SizedBox(
+                width: 200,
+                height: 80,
+                child: ElevatedButton(
+                    child: const Text('Save'),
+                    style: ElevatedButton.styleFrom(
                       primary: Colors.blueGrey,
-           ),
-        onPressed: () async {
-          final doc = FirebaseFirestore.instance.collection('users').doc(uid);
-          doc.update({
-            'nickname': nickname,
-            'birthday': birthday,
-          });
-               }
-        )
-           )
-        ]
-        ),
-  );
+                    ),
+                    onPressed: () async {
+                      //databaseに保存
+                      final doc = FirebaseFirestore.instance.collection('users')
+                          .doc(uid);
+                      doc.update({
+                        'nickname': nicknameController.text,
+                        'birthday': birthdayController.text,
+                      });
+                    }
+                )
+            ),
+            
+          ]
+      ),
+    );
   }
-  }
+}

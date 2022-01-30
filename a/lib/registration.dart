@@ -7,9 +7,10 @@ import 'package:a/login.dart';
 
 class RegistrationPage extends StatelessWidget {
 
-  String email ='';
-  String password ='';
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
+  RegistrationPage({Key? key}) : super(key: key);
 
 
   @override
@@ -21,37 +22,38 @@ class RegistrationPage extends StatelessWidget {
       body: SizedBox(
         width: double.infinity,
         child: Column(
-          children: [
-            buildTextFormField('EmailAddress',email),
-            buildPadding(),
-            buildTextFormFieldPassword('Password',password),
-            SizedBox(
-              width:  200,
-              height: 50,
-              child:  ElevatedButton(child: const Text('Enter'),
-                  onPressed: () async {
-                    final userCredential = await FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(
-                        email: email, password: password);
-                    final user = userCredential.user;
-                    if (user != null) {
-                      final uid = user.uid;
-                      final doc = FirebaseFirestore.instance.collection(
-                          'users').doc(uid);
-                      await doc.set({
-                        'uid': uid,
-                        'email': email,
-                      });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginPage(),
-                          fullscreenDialog: true,
-                        ),
-                      );
-                    }
-                  }),
-            ),
-              ]
+            children: [
+              buildTextFormField('EmailAddress', emailController),
+              buildPadding(5),
+              buildTextFormFieldPassword('Password', passwordController),
+              SizedBox(
+                width: 200,
+                height: 50,
+                child: ElevatedButton(child: const Text('Enter'),
+                    onPressed: () async {
+                      //新規登録
+                      final userCredential = await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                          email: emailController.text,
+                          password: passwordController.text);
+                      final user = userCredential.user;
+                      if (user != null) {
+                        final uid = user.uid;
+                        final doc = FirebaseFirestore.instance.collection(
+                            'users').doc(uid);
+                        await doc.set({
+                          'uid': uid,
+                          'email': emailController.text,
+                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage(),
+                          ),
+                        );
+                      }
+                    }),
+              ),
+            ]
         ),
       ),
     );
