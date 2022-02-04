@@ -26,14 +26,12 @@ class _RoomAddState extends State<RoomAdd> {
         actions: [
           TextButton(
             onPressed: () async {
-              final date = DateTime.now().toLocal().toIso8601String();
               await FirebaseFirestore.instance
                   .collection('chat_room')
-                  .doc(roomname)
-                  .set({
+                  .add({
                 'name': roomname,
                 'adminuid': uid,
-                'createdAt': date,
+                'createdAt': DateTime.now(),
               });
               Navigator.push(
                 context,

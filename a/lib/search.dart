@@ -42,8 +42,7 @@ class SearchPage extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        ChatRoom(
-                                          name: name,
+                                        ChatPage(
                                         ),
                                   ),
                                 );

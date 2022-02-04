@@ -54,8 +54,8 @@ class _ChatState extends State<Chat> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ChatRoom(
-                              name: data.name,
+                            ChatPage(
+
                             ),
                       ),
                     );
