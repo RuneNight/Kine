@@ -10,7 +10,8 @@ import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  final String name;
+  const ChatPage({Key? key,required this.name}) : super(key: key);
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -168,6 +169,9 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.name),
+      ),
       body: SafeArea(
         bottom: false,
         child: Chat(
