@@ -27,7 +27,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var _selectIndex = 0;
   final _pages = [
-    Chat(),
+    const Chat(),
     const SettingsPage(),
   ];
 

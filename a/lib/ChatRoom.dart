@@ -1,13 +1,21 @@
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
+
+class Message {
+  Message(this.uid, this.message,this.createdAt,this.id);
+  String uid;
+  String message;
+  Timestamp createdAt;
+  String id;
+}
 
 class ChatPage extends StatefulWidget {
   final String name;
@@ -18,13 +26,14 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  List<types.Message> _messages = [];
-  final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
-
+  final List<types.Message> _messages = [];
+  final _auth = FirebaseAuth.instance.currentUser!.uid;
+  var _user;
+  List<Message>? messagelist;
   @override
   void initState() {
     super.initState();
-    _loadMessages();
+    _user = types.User(id: _auth);
   }
 
   void _addMessage(types.Message message) {
@@ -119,7 +128,6 @@ class _ChatPageState extends State<ChatPage> {
         uri: result.path,
         width: image.width.toDouble(),
       );
-
       _addMessage(message);
     }
   }
@@ -144,45 +152,75 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleSendPressed(types.PartialText message) {
+  void _handleSendPressed(types.PartialText message) async {
     final textMessage = types.TextMessage(
       author: _user,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: const Uuid().v4(),
       text: message.text,
     );
-
     _addMessage(textMessage);
+    final doc = FirebaseFirestore.instance.collection('chat_room').doc(widget.name).collection('MessageList');
+    doc.add({
+      'message': message.text,
+      'uid': _auth,
+      'createdAt': Timestamp.now(),
+      'id': const Uuid().v4(),
+    });
   }
 
-  void _loadMessages() async {
-    final response = await rootBundle.loadString('assets/messages.json');
-    final messages = (jsonDecode(response) as List)
-        .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
-        .toList();
+  Future _loadMessages() async {
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('chat_room').doc(widget.name).collection('MessageList').get();
+    final List<Message> messagelist = snapshot.docs.map(
+        (DocumentSnapshot document){
+          Map<String,dynamic> data = document.data() as Map<String,dynamic>;
+          final String uid = data['uid'];
+          final String message = data['message'];
+          final Timestamp createdAt = data['createdAt'];
+          final String id = data['id'];
+          return Message(uid, message,createdAt,id);
+        }
+    ).toList();
+    this.messagelist = messagelist;
 
-    setState(() {
-      _messages = messages;
-    });
+    for (var i=0; i<messagelist.length; i++){
+      _addMessage(types.TextMessage(
+          author: _user,
+          createdAt: messagelist[i].createdAt.millisecondsSinceEpoch,
+          id: messagelist[i].id,
+          text: messagelist[i].message,
+      ));
+    }
+    return;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.name),
+        title: Text(widget.name
+        ),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.construction),
+              onPressed: () => setState(() {
+              }),
+            ),
+          ],
+          backgroundColor: Colors.deepPurple
       ),
-      body: SafeArea(
-        bottom: false,
-        child: Chat(
+      body: FutureBuilder(
+        future: _loadMessages(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return Chat(
           messages: _messages,
           onAttachmentPressed: _handleAtachmentPressed,
           onMessageTap: _handleMessageTap,
           onPreviewDataFetched: _handlePreviewDataFetched,
           onSendPressed: _handleSendPressed,
           user: _user,
-        ),
-      ),
+        );
+      },)
     );
   }
 }
