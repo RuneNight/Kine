@@ -29,7 +29,6 @@ class RegistrationPage extends StatelessWidget {
             child: ElevatedButton(
                 child: const Text('Enter'),
                 onPressed: () async {
-                  //新規登録
                   final userCredential = await FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
                       email: emailController.text,

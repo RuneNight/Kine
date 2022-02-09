@@ -1,3 +1,4 @@
+import 'package:a/roomSetting.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -210,7 +211,14 @@ class _ChatPageState extends State<ChatPage> {
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.construction),
-              onPressed: () => setState(() {}),
+              onPressed: () => setState(() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => roomSettingPage(roomname: widget.name),
+                  ),
+                );
+              }),
             ),
           ],
           backgroundColor: Colors.deepPurple),

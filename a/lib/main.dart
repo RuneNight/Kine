@@ -30,6 +30,7 @@ class _MyAppState extends State<MyApp> {
       title: 'AccountPage',
       debugShowCheckedModeBanner: false,
       home: _auth != null ? const HomePage() : const Registration(),
+      darkTheme: ThemeData.dark(),
     );
   }
 }

@@ -49,20 +49,24 @@ class _ChatState extends State<Chat> {
               }
               final List<Widget> widgets = room.map((data) {
                 return ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ChatPage(
-                              name:data.name
-                            ),
-                      ),
-                    );
-                  },
-                  title: Text(data.name),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ChatPage(
+                                  name: data.name
+                              ),
+                        ),
+                      );
+                    },
+                    title: Text(data.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),)
                 );
               }).toList();
+
               return Column(
                 children: widgets,
               );

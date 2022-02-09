@@ -64,10 +64,14 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         buildPadding(15),
         SizedBox(
-            width: 400,
+            width: 350,
             height: 100,
             child: ElevatedButton(
-                child: const Text('Save'),
+                child: const Text('Save',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 40,
+                    )),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.blueGrey,
                 ),
