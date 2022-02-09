@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class RoomList {
-  RoomList(this.name, this.createdAt);
+  RoomList(this.name, this.createdAt,this.docid);
   String name;
   Timestamp createdAt;
+  String docid;
 }
 class RoomListModel extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -20,7 +21,8 @@ class RoomListModel extends ChangeNotifier {
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
         final String name = data["name"];
         final Timestamp createdAt = data["createdAt"];
-        return RoomList(name, createdAt);
+        final String docid = document.id;
+        return RoomList(name, createdAt,docid);
       }).toList();
       list = room;
       notifyListeners();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:a/ChatRoom.dart';
+import 'package:a/chat_room.dart';
 import 'package:a/model/room_list_model.dart';
 import 'package:a/search.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +55,9 @@ class _ChatState extends State<Chat> {
                         MaterialPageRoute(
                           builder: (context) =>
                               ChatPage(
-                                  name: data.name
+                                  name: data.name,
+                                id: data.docid,
+
                               ),
                         ),
                       );
@@ -66,7 +68,6 @@ class _ChatState extends State<Chat> {
                       ),)
                 );
               }).toList();
-
               return Column(
                 children: widgets,
               );

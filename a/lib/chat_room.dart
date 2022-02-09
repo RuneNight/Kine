@@ -1,4 +1,4 @@
-import 'package:a/roomSetting.dart';
+import 'package:a/room_setting.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +20,8 @@ class Message {
 
 class ChatPage extends StatefulWidget {
   final String name;
-  const ChatPage({Key? key, required this.name}) : super(key: key);
+  final String id;
+  const ChatPage({Key? key, required this.name,required this.id}) : super(key: key);
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -215,7 +216,7 @@ class _ChatPageState extends State<ChatPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => roomSettingPage(roomname: widget.name),
+                    builder: (context) => roomSettingPage(roomname: widget.name,docid: widget.id),
                   ),
                 );
               }),

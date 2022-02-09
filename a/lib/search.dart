@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:a/ChatRoom.dart';
+import 'package:a/chat_room.dart';
 import 'package:a/builds/textfield.dart';
 
 class SearchPage extends StatelessWidget {
@@ -43,7 +42,7 @@ class SearchPage extends StatelessWidget {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         ChatPage(
-                                            name:name
+                                            name:name, id: '',
                                         ),
                                   ),
                                 );

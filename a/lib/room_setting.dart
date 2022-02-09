@@ -8,8 +8,8 @@ class roomSettingPage extends StatelessWidget {
   static String? roomname;
   static String? editName;
   static String dropdownValue = 'One';
-
-  const roomSettingPage({Key? key, required String roomname}) : super(key: key);
+  final String docid;
+  const roomSettingPage({Key? key, required String roomname,required String this.docid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class roomSettingPage extends StatelessWidget {
                             ), onPressed: () async {
                             final doc =
                             FirebaseFirestore.instance.collection('chat_room')
-                                .doc('lb6DgZpZepQ17dSWeMBm');
+                                .doc(docid);
                             doc.update({
                               'name': editName,
                             });
