@@ -1,8 +1,8 @@
+import 'package:a/builds/padding.dart';
+import 'package:a/builds/textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:a/builds/padding.dart';
-import 'package:a/builds/textfield.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -33,57 +33,64 @@ class _SettingsPageState extends State<SettingsPage> {
     AppBar(
       title: const Text("Settings_Page"),
     );
-    return SingleChildScrollView(
-      child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-        buildPadding(5),
-        const Text(
-          'Profile',
-          style: TextStyle(
-            fontSize: 20,
-          ),
-        ),
-        buildPadding(5),
-        buildTextFormField('NickName', nicknameController),
-        buildPadding(10),
-        Center(child: Text("${_date}")),
-        SizedBox(
-          width: 300,
-          height: 80,
-          child: ElevatedButton(
-            onPressed: () => _selectDate(context),
-            child: const Text('Birthday',
-              style: TextStyle(
-                color: Colors.pinkAccent,
-                fontSize: 30,
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.black,
-            ),
-          ),
-        ),
-        buildPadding(15),
-        SizedBox(
-            width: 350,
-            height: 100,
-            child: ElevatedButton(
-                child: const Text('Save',
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Profile"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              buildPadding(5),
+              buildPadding(5),
+              buildTextFormField('NickName', nicknameController),
+              buildPadding(10),
+              Center(child: Text("${_date}")),
+              SizedBox(
+                width: 300,
+                height: 80,
+                child: ElevatedButton(
+                  onPressed: () => _selectDate(context),
+                  child: const Text(
+                    'Birthday',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40,
-                    )),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blueGrey,
+                      color: Colors.pinkAccent,
+                      fontSize: 30,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.black,
+                  ),
                 ),
-                onPressed: () async {
-                  final doc =
-                  FirebaseFirestore.instance.collection('users').doc(uid);
-                  doc.update({
-                    'nickname': nicknameController.text,
-                    'birthday': _date,
-                  });
-                })),
-      ]),
+              ),
+              buildPadding(15),
+              SizedBox(
+                  width: 350,
+                  height: 100,
+                  child: ElevatedButton(
+                      child: const Text('Save',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 40,
+                          )),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blueGrey,
+                      ),
+                      onPressed: () async {
+                        final doc = FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(uid);
+                        doc.update({
+                          'nickname': nicknameController.text,
+                          'birthday': _date,
+                        });
+                      })),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
