@@ -176,7 +176,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _loadMessages() async {
+  Future _loadMessages() async {
     final snapshot = await FirebaseFirestore.instance
         .collection('chat_room')
         .doc(widget.name)
@@ -184,7 +184,8 @@ class _ChatPageState extends State<ChatPage> {
         .orderBy("createdAt", descending: false)
         .snapshots()
         .listen((QuerySnapshot snapshot) {
-      final List<Message> messagelist = snapshot.docs.map((DocumentSnapshot document) {
+      final List<Message> messagelist = snapshot.docs.map((
+          DocumentSnapshot document) {
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
         final String uid = data['uid'];
         final String message = data['message'];
@@ -192,18 +193,17 @@ class _ChatPageState extends State<ChatPage> {
         final String id = data['id'];
         return Message(uid, message, createdAt, id);
       }).toList();
-    this.messagelist = messagelist;
-
-    for (var i = 0; i < messagelist.length; i++) {
-      _addMessage(types.TextMessage(
-        author: types.User(id: messagelist[i].uid),
-        createdAt: messagelist[i].createdAt.millisecondsSinceEpoch,
-        id: messagelist[i].id,
-        text: messagelist[i].message,
-      ));
-    }
-    return true;
-
+      this.messagelist!.clear();
+      this.messagelist = messagelist;
+      for (var i = 0; i < messagelist.length; i++) {
+        _addMessage(types.TextMessage(
+          author: types.User(id: messagelist[i].uid),
+          createdAt: messagelist[i].createdAt.millisecondsSinceEpoch,
+          id: messagelist[i].id,
+          text: messagelist[i].message,
+        ));
+      }
+    });
   }
 
   @override
@@ -226,8 +226,8 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ],
           backgroundColor: Colors.deepPurple),
-      body: StreamBuilder(
-        stream: _loadMessages(),
+      body: FutureBuilder(
+        future: _loadMessages(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return Chat(
             messages: _messages,
