@@ -1,5 +1,6 @@
 
 import 'package:a/builds/padding.dart';
+import 'package:a/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,10 @@ class roomSettingPage extends StatelessWidget {
   static String? editName;
   static String dropdownValue = 'One';
   final String docid;
-  const roomSettingPage({Key? key, required String roomname,required String this.docid}) : super(key: key);
+
+  const roomSettingPage(
+      {Key? key, required String roomname, required String this.docid})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +81,13 @@ class roomSettingPage extends StatelessWidget {
                             doc.update({
                               'name': editName,
                             });
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomePage(),
+                                fullscreenDialog: true,
+                              ),
+                            );
                           },
                           )),
                       buildPadding(30),

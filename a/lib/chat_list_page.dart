@@ -39,39 +39,51 @@ class _ChatState extends State<Chat> {
                   }),
             ],
           ),
-          body: Consumer<RoomListModel>(
-            builder: (context, model, child) {
-              final List<RoomList>? room = model.list;
-              if (room == null) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+          body: Container(
+            color: Color(0xff2d8e32),
+            child: Consumer<RoomListModel>(
+              builder: (context, model, child) {
+                final List<RoomList>? room = model.list;
+                if (room == null) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                final List<Widget> widgets = room.map((data) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      border: Border.symmetric(
+                        horizontal: BorderSide(
+                          color: Colors.black87,
+                        )
+                      )
+                    ),
+                    child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatPage(
+                                      name: data.name,
+                                    id: data.docid,
+                                  ),
+                            ),
+                          );
+                        },
+                        title: Text(data.name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xe8000000)
+                          ))
+                    ),
+                  );
+                }).toList();
+                return Column(
+                  children: widgets,
                 );
-              }
-              final List<Widget> widgets = room.map((data) {
-                return ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ChatPage(
-                                  name: data.name,
-                                id: data.docid,
-
-                              ),
-                        ),
-                      );
-                    },
-                    title: Text(data.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),)
-                );
-              }).toList();
-              return Column(
-                children: widgets,
-              );
-            },
+              },
+            ),
           ),
         ));
   }
