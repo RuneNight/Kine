@@ -38,7 +38,7 @@ class _ChatState extends State<Chat> {
             ],
           ),
           body: Container(
-            color: Color(0xff2d8e32),
+            color: Color(0xff7f9714),
             child: Consumer<RoomListModel>(
               builder: (context, model, child) {
                 final List<RoomList>? room = model.list;
@@ -72,8 +72,10 @@ class _ChatState extends State<Chat> {
                                 color: Color(0xe8000000)))),
                   );
                 }).toList();
-                return Column(
-                  children: widgets,
+                return SingleChildScrollView(
+                  child: Column(
+                    children: widgets,
+                  ),
                 );
               },
             ),
