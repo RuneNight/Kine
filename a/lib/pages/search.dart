@@ -1,7 +1,7 @@
+import 'package:a/builds/textfield.dart';
+import 'package:a/pages/chat_room.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:a/chat_room.dart';
-import 'package:a/builds/textfield.dart';
 
 class SearchPage extends StatelessWidget {
   String room = '';
@@ -40,10 +40,10 @@ class SearchPage extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        ChatPage(
-                                            name:name, id: '',
-                                        ),
+                                    builder: (context) => ChatPage(
+                                      name: name,
+                                      id: '',
+                                    ),
                                   ),
                                 );
                               },
@@ -58,9 +58,7 @@ class SearchPage extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),

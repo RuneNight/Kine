@@ -1,8 +1,8 @@
+import 'package:a/builds/padding.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:a/builds/padding.dart';
 
 import 'home.dart';
 
@@ -14,7 +14,7 @@ class RoomAdd extends StatefulWidget {
 }
 
 class _RoomAddState extends State<RoomAdd> {
-  String roomname = "";
+  String room_name = "";
   String uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
@@ -26,10 +26,8 @@ class _RoomAddState extends State<RoomAdd> {
         actions: [
           TextButton(
             onPressed: () async {
-              await FirebaseFirestore.instance
-                  .collection('chat_room')
-                  .add({
-                'name': roomname,
+              await FirebaseFirestore.instance.collection('chat_room').add({
+                'name': room_name,
                 'adminuid': uid,
                 'createdAt': DateTime.now(),
               });
@@ -46,9 +44,7 @@ class _RoomAddState extends State<RoomAdd> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
-                color: Theme
-                    .of(context)
-                    .primaryColor,
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),
@@ -81,7 +77,7 @@ class _RoomAddState extends State<RoomAdd> {
                 decoration: const InputDecoration(labelText: 'RoomName'),
                 onChanged: (text) {
                   if (text.isNotEmpty) {
-                    roomname = text;
+                    room_name = text;
                   }
                 })
           ],

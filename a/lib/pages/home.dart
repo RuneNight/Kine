@@ -1,7 +1,7 @@
+import 'package:a/pages/add_room_page.dart';
+import 'package:a/pages/chat_list_page.dart';
+import 'package:a/pages/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:a/add_room_page.dart';
-import 'package:a/chat_list_page.dart';
-import 'package:a/settings.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

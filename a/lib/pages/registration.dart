@@ -1,9 +1,9 @@
+import 'package:a/builds/padding.dart';
+import 'package:a/builds/textfield.dart';
+import 'package:a/pages/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:a/builds/padding.dart';
-import 'package:a/builds/textfield.dart';
-import 'package:a/login.dart';
 
 class RegistrationPage extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
@@ -31,13 +31,13 @@ class RegistrationPage extends StatelessWidget {
                 onPressed: () async {
                   final userCredential = await FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
-                      email: emailController.text,
-                      password: passwordController.text);
+                          email: emailController.text,
+                          password: passwordController.text);
                   final user = userCredential.user;
                   if (user != null) {
                     final uid = user.uid;
                     final doc =
-                    FirebaseFirestore.instance.collection('users').doc(uid);
+                        FirebaseFirestore.instance.collection('users').doc(uid);
                     await doc.set({
                       'uid': uid,
                       'email': emailController.text,

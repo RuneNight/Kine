@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:a/chat_room.dart';
 import 'package:a/model/room_list_model.dart';
-import 'package:a/search.dart';
+import 'package:a/pages/chat_room.dart';
+import 'package:a/pages/search.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Chat extends StatefulWidget {
@@ -15,9 +15,7 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<RoomListModel>(
-        create: (_) =>
-        RoomListModel()
-          ..fetchRoom(),
+        create: (_) => RoomListModel()..fetchRoom(),
         child: Scaffold(
           appBar: AppBar(
             elevation: 8,
@@ -52,31 +50,26 @@ class _ChatState extends State<Chat> {
                 final List<Widget> widgets = room.map((data) {
                   return Container(
                     decoration: BoxDecoration(
-                      border: Border.symmetric(
-                        horizontal: BorderSide(
-                          color: Colors.black87,
-                        )
-                      )
-                    ),
+                        border: Border.symmetric(
+                            horizontal: BorderSide(
+                      color: Colors.black87,
+                    ))),
                     child: ListTile(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  ChatPage(
-                                      name: data.name,
-                                    id: data.docid,
-                                  ),
+                              builder: (context) => ChatPage(
+                                name: data.name,
+                                id: data.docid,
+                              ),
                             ),
                           );
                         },
                         title: Text(data.name,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xe8000000)
-                          ))
-                    ),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xe8000000)))),
                   );
                 }).toList();
                 return Column(

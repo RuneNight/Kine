@@ -1,9 +1,9 @@
+import 'package:a/builds/padding.dart';
+import 'package:a/pages/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:a/builds/padding.dart';
-import 'package:a/home.dart';
 
-import 'builds/textfield.dart';
+import '../builds/textfield.dart';
 
 class LoginPage extends StatelessWidget {
   TextEditingController loginEmailController = TextEditingController();
