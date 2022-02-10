@@ -177,21 +177,21 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _loadMessages() async {
-    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+    final snapshot = await FirebaseFirestore.instance
         .collection('chat_room')
         .doc(widget.name)
         .collection('MessageList')
         .orderBy("createdAt", descending: false)
-        .get();
-    final List<Message> messagelist =
-        snapshot.docs.map((DocumentSnapshot document) {
-      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-      final String uid = data['uid'];
-      final String message = data['message'];
-      final Timestamp createdAt = data['createdAt'];
-      final String id = data['id'];
-      return Message(uid, message, createdAt, id);
-    }).toList();
+        .snapshots()
+        .listen((QuerySnapshot snapshot) {
+      final List<Message> messagelist = snapshot.docs.map((DocumentSnapshot document) {
+        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+        final String uid = data['uid'];
+        final String message = data['message'];
+        final Timestamp createdAt = data['createdAt'];
+        final String id = data['id'];
+        return Message(uid, message, createdAt, id);
+      }).toList();
     this.messagelist = messagelist;
 
     for (var i = 0; i < messagelist.length; i++) {
@@ -202,7 +202,8 @@ class _ChatPageState extends State<ChatPage> {
         text: messagelist[i].message,
       ));
     }
-    return;
+    return true;
+
   }
 
   @override
@@ -225,13 +226,18 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ],
           backgroundColor: Colors.deepPurple),
-      body: Chat(
-        messages: _messages,
-        onAttachmentPressed: _handleAtachmentPressed,
-        onMessageTap: _handleMessageTap,
-        onPreviewDataFetched: _handlePreviewDataFetched,
-        onSendPressed: _handleSendPressed,
-        user: _user,
+      body: StreamBuilder(
+        stream: _loadMessages(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          return Chat(
+            messages: _messages,
+            onAttachmentPressed: _handleAtachmentPressed,
+            onMessageTap: _handleMessageTap,
+            onPreviewDataFetched: _handlePreviewDataFetched,
+            onSendPressed: _handleSendPressed,
+            user: _user,
+          );
+        },
       ),
     );
   }
