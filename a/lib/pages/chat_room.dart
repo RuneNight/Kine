@@ -1,3 +1,4 @@
+import 'package:a/model/message_model.dart';
 import 'package:a/pages/room_setting.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -8,15 +9,8 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-
-class Message {
-  Message(this.uid, this.message, this.createdAt, this.id);
-  String uid;
-  String message;
-  Timestamp createdAt;
-  String id;
-}
 
 class ChatPage extends StatefulWidget {
   final String name;
@@ -32,7 +26,7 @@ class _ChatPageState extends State<ChatPage> {
   final List<types.Message> _messages = [];
   final _auth = FirebaseAuth.instance.currentUser!.uid;
   var _user;
-  List<Message>? messagelist;
+
   @override
   void initState() {
     super.initState();
@@ -176,35 +170,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  Future _loadMessages() async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('chat_room')
-        .doc(widget.name)
-        .collection('MessageList')
-        .orderBy("createdAt", descending: false)
-        .snapshots()
-        .listen((QuerySnapshot snapshot) {
-      final List<Message> messagelist = snapshot.docs.map((
-          DocumentSnapshot document) {
-        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-        final String uid = data['uid'];
-        final String message = data['message'];
-        final Timestamp createdAt = data['createdAt'];
-        final String id = data['id'];
-        return Message(uid, message, createdAt, id);
-      }).toList();
-      this.messagelist!.clear();
-      this.messagelist = messagelist;
-      for (var i = 0; i < messagelist.length; i++) {
-        _addMessage(types.TextMessage(
-          author: types.User(id: messagelist[i].uid),
-          createdAt: messagelist[i].createdAt.millisecondsSinceEpoch,
-          id: messagelist[i].id,
-          text: messagelist[i].message,
-        ));
-      }
-    });
-  }
+  Future _loadMessages() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -226,9 +192,8 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ],
           backgroundColor: Colors.deepPurple),
-      body: FutureBuilder(
-        future: _loadMessages(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+      body: Consumer<MessageModel>(
+        builder: (context, model, child) {
           return Chat(
             messages: _messages,
             onAttachmentPressed: _handleAtachmentPressed,
